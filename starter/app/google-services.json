@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "557945877388",
+    "project_id": "todo-location-reminder-app",
+    "storage_bucket": "todo-location-reminder-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:557945877388:android:678c5cc1766cec4dcddca9",
+        "android_client_info": {
+          "package_name": "com.udacity.project4"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "557945877388-dkdfuklumf78od4hovitp5q9m4h94r49.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.udacity.project4",
+            "certificate_hash": "5fdedabdc91252cc2682ae669dc5d2112223e5e1"
+          }
+        },
+        {
+          "client_id": "557945877388-hd29e4jc3bivno8e5heduai7hk4t78ns.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7ihyPJf1LSw1JaEK_D5SJq2Cx1IlXzV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "557945877388-hd29e4jc3bivno8e5heduai7hk4t78ns.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
