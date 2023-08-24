@@ -1,6 +1,5 @@
 package com.udacity.project4.locationreminders
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -28,12 +27,6 @@ class RemindersActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.logout-> {
-                AuthUI.getInstance().signOut(applicationContext)
-                Log.d("RemindersActivity", "Something is going on")
-                val intent = Intent(this, AuthenticationActivity::class.java)
-                startActivity(intent)
-            }
             android.R.id.home -> {
                 (binding.navHostFragment as NavHostFragment).navController.popBackStack()
                 return true
