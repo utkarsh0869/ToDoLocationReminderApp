@@ -86,7 +86,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         val latitude = address?.latitude
 
         // Get the location name.
-        val locationName = address?.getAddressLine(0)
+        val locationName = address?.featureName
         Log.d("SelectedLocationFrag", "$locationName")
 
         _viewModel.latitude.value = latitude

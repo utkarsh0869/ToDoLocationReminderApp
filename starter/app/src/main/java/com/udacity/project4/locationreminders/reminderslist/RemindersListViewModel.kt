@@ -26,7 +26,7 @@ class RemindersListViewModel(
             //interacting with the dataSource has to be through a coroutine
             val result = dataSource.getReminders()
             showLoading.postValue(false)
-            when (result) {
+            when(result) {
                 is Result.Success<*> -> {
                     val dataList = ArrayList<ReminderDataItem>()
                     dataList.addAll((result.data as List<ReminderDTO>).map { reminder ->
@@ -44,6 +44,8 @@ class RemindersListViewModel(
                 }
                 is Result.Error ->
                     showSnackBar.value = result.message
+
+                else -> {}
             }
 
             //check if no data has to be shown
