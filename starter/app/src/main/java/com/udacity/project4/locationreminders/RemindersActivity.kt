@@ -22,13 +22,13 @@ class RemindersActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRemindersBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                (binding.navHostFragment as NavHostFragment).navController.popBackStack()
+                val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+                navHostFragment.navController.popBackStack()
                 return true
             }
         }
