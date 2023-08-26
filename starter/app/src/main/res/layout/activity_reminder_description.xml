@@ -17,17 +17,42 @@
         android:orientation="vertical"
         tools:context=".locationreminders.ReminderDescriptionActivity">
 
-        <!-- TODO: Add the design of the reminder details -->
-
         <TextView
+            android:id="@+id/reminderTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Reminder Details"
+            android:text="@{reminderDataItem.title}"
             android:textSize="@dimen/text_size_large"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_margin="8dp"/>
+
+        <TextView
+            android:id="@+id/reminderDescriptionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{reminderDataItem.description}"
+            android:textSize="20sp"
+            android:layout_margin="8dp"/>
+
+        <TextView
+            android:id="@+id/reminderLocationTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@{reminderDataItem.location}"
+            android:textSize="20sp"
+            android:layout_margin="8dp"/>
+
+        <TextView
+            android:id="@+id/reminderCoordinatesTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textSize="@dimen/text_size_large"
+            android:text="@{@string/lat_long_snippet(reminderDataItem.latitude, reminderDataItem.longitude)}"
+            tools:text="@string/lat_long_snippet"/>
+
     </LinearLayout>
 </layout>
