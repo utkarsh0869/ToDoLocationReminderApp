@@ -61,9 +61,7 @@ class AuthenticationActivity : AppCompatActivity() {
                 AuthenticationViewModel.AuthenticationState.AUTHENTICATED -> {
                     val intent = Intent(this, RemindersActivity::class.java)
                     startActivity(intent)
-
-                    // Something with the picture?
-
+                    finish()
                 }
                 else -> {
                     binding.loginButton.setOnClickListener {

@@ -10,8 +10,6 @@ import android.Manifest.permission
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.res.Resources
-import android.location.Geocoder
-import android.location.Location
 import android.net.Uri
 import android.provider.Settings
 import android.util.Log
@@ -19,6 +17,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.udacity.project4.R
 import com.udacity.project4.base.BaseFragment
@@ -35,6 +34,8 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentSelectLocationBinding
     private lateinit var map: GoogleMap
     private val TAG = SelectLocationFragment::class.java.simpleName
+    private var marker: Marker? = null
+
 
     private val runningQOrLater = android.os.Build.VERSION.SDK_INT >=
             android.os.Build.VERSION_CODES.Q
@@ -51,13 +52,9 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(true)
 
-        // TODO: add the map setup implementation
         val mapView = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapView.getMapAsync(this)
-        // TODO: zoom to the user location after taking his permission
-        // TODO: put a marker to location that the user selected
 
-        // TODO: call this function after the user confirms on the selected location
         binding.saveButton.setOnClickListener {
             onLocationSelected()
         }
@@ -65,37 +62,13 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun onLocationSelected() {
-        // TODO: When the user confirms on the selected location,
-        //  send back the selected location details to the view model
-        //  and navigate back to the previous fragment to save the reminder and add the geofence
+        marker?.let { marker ->
+            _viewModel.latitude.value = marker.position.latitude
+            _viewModel.longitude.value = marker.position.longitude
+            _viewModel.reminderSelectedLocationStr.value = marker.title
+            _viewModel.navigationCommand.value = NavigationCommand.Back
+        }
 
-        // Get the LatLng object of the selected location.
-        val latLng = map.cameraPosition.target
-
-        // Use the Geocoder class to reverse geocode the LatLng object.
-        val geocoder = Geocoder(requireContext())
-        val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-
-        // The first Address object in the list will contain the longitude, latitude, and location name of the selected location.
-        val address = addresses?.get(0)
-
-        // Get the longitude.
-        val longitude = address?.longitude
-
-        // Get the latitude.
-        val latitude = address?.latitude
-
-        // Get the location name.
-        val locationName = address?.featureName
-        Log.d("SelectedLocationFrag", "$locationName")
-
-        _viewModel.latitude.value = latitude
-        _viewModel.longitude.value = longitude
-        _viewModel.reminderSelectedLocationStr.value = locationName
-
-        val directions = SelectLocationFragmentDirections
-            .actionSelectLocationFragmentToSaveReminderFragment()
-        _viewModel.navigationCommand.value = NavigationCommand.To(directions)
     }
 
     private fun requestLocationPermission() {
@@ -175,18 +148,22 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
             map.mapType = GoogleMap.MAP_TYPE_NORMAL
             true
         }
+
         R.id.hybrid_map -> {
             map.mapType = GoogleMap.MAP_TYPE_HYBRID
             true
         }
+
         R.id.satellite_map -> {
             map.mapType = GoogleMap.MAP_TYPE_SATELLITE
             true
         }
+
         R.id.terrain_map -> {
             map.mapType = GoogleMap.MAP_TYPE_TERRAIN
             true
         }
+
         else -> super.onOptionsItemSelected(item)
     }
 
@@ -204,11 +181,12 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
     private fun setPoiClick(map: GoogleMap) {
         map.setOnPoiClickListener { poi ->
-            map.addMarker(
+            marker = map.addMarker(
                 MarkerOptions()
                     .position(poi.latLng)
                     .title(poi.name)
-            )?.showInfoWindow()
+            )
+            marker?.showInfoWindow()
         }
 //        map.cameraPosition.target
     }
