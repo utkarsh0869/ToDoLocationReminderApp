@@ -99,18 +99,12 @@ class SaveReminderFragment : BaseFragment() {
                 latitude = latitude,
                 longitude = longitude
             )
-
-            _viewModel.validateAndSaveReminder(reminderDataItem)
-
-            // Navigate to another fragment to get the user location
-            val directions = SaveReminderFragmentDirections
-                .actionSaveReminderFragmentToReminderListFragment()
-            _viewModel.navigationCommand.value = NavigationCommand.To(directions)
-
-            if (foregroundAndBackgroundLocationPermissionApproved()){
-                checkDeviceLocationSettingsAndStartGeofence()
-            } else {
-                requestForegroundAndBackgroundLocationPermissions()
+            if(_viewModel.validateEnteredData(reminderDataItem)) {
+                if (foregroundAndBackgroundLocationPermissionApproved()){
+                    checkDeviceLocationSettingsAndStartGeofence()
+                } else {
+                    requestForegroundAndBackgroundLocationPermissions()
+                }
             }
         }
     }
@@ -238,25 +232,23 @@ class SaveReminderFragment : BaseFragment() {
         }
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == REQUEST_TURN_DEVICE_LOCATION_ON) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                addGeofence()
-//            } else{
-//                checkDeviceLocationSettingsAndStartGeofence(false)
-//            }
-//        }
-//    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_TURN_DEVICE_LOCATION_ON) {
+            if (resultCode == Activity.RESULT_OK) {
+                addGeofence()
+            } else{
+                checkDeviceLocationSettingsAndStartGeofence(false)
+            }
+        }
+    }
 
     private fun addGeofence() {
 
-        val geofenceData = reminderDataItem
-
         val geofence = Geofence.Builder()
-            .setRequestId(geofenceData.id)
-            .setCircularRegion(geofenceData.latitude!!,
-                geofenceData.longitude!!,
+            .setRequestId(reminderDataItem.id)
+            .setCircularRegion(reminderDataItem.latitude!!,
+                reminderDataItem.longitude!!,
                 GeofencingConstants.GEOFENCE_RADIUS_IN_METERS
             )
             .setExpirationDuration(GeofencingConstants.GEOFENCE_EXPIRATION_IN_MILLISECONDS)
@@ -285,8 +277,13 @@ class SaveReminderFragment : BaseFragment() {
         }
         geofencingClient?.addGeofences(geofencingRequest, geofencePendingIntent)?.run {
             addOnSuccessListener {
-                addFenceFlag = true
-                Log.e(TAG, geofence.latitude.toString())
+                Log.d(TAG, "Location added!!!")
+                // save reminder to local db
+                _viewModel.validateAndSaveReminder(reminderDataItem)
+                Toast.makeText(requireContext(), "Geofences added",
+                    Toast.LENGTH_SHORT)
+                    .show()
+                _viewModel.navigationCommand.value = NavigationCommand.Back
             }
             addOnFailureListener {
                 Toast.makeText(requireContext(), R.string.geofences_not_added,
@@ -294,21 +291,6 @@ class SaveReminderFragment : BaseFragment() {
                 if ((it.message != null)) {
                     Log.w(TAG, it.message!!)
                 }
-            }
-        }
-    }
-
-    private fun removeGeofences() {
-        if (!foregroundAndBackgroundLocationPermissionApproved()) {
-            return
-        }
-        geofencingClient?.removeGeofences(geofencePendingIntent)?.run {
-            addOnSuccessListener {
-                Log.d(TAG, "Geofences removed")
-                removeFenceFlag = true
-            }
-            addOnFailureListener {
-                Log.d(TAG, "Geofences not removed.")
             }
         }
     }
@@ -322,19 +304,5 @@ class SaveReminderFragment : BaseFragment() {
         super.onDestroy()
         // Make sure to clear the view model after destroy, as it's a single view model.
         _viewModel.onClear()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        removeGeofences()
-        if(removeFenceFlag) {
-            Toast.makeText(requireContext(), "Geofences removed", Toast.LENGTH_SHORT)
-                .show()
-        }
-        if(addFenceFlag) {
-            Toast.makeText(requireContext(), "Geofences added",
-                Toast.LENGTH_SHORT)
-                .show()
-        }
     }
 }

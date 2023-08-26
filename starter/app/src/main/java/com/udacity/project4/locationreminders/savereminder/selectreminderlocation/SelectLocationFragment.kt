@@ -193,7 +193,6 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
             )
             marker?.showInfoWindow()
         }
-//        map.cameraPosition.target
     }
 
     private fun setMapStyle(map: GoogleMap) {
