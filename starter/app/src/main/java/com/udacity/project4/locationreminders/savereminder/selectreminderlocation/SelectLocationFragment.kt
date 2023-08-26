@@ -43,8 +43,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val layoutId = R.layout.fragment_select_location
-        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_select_location, container, false)
 
         binding.viewModel = _viewModel
         binding.lifecycleOwner = this
@@ -55,10 +54,14 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         val mapView = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapView.getMapAsync(this)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.saveButton.setOnClickListener {
             onLocationSelected()
         }
-        return binding.root
     }
 
     private fun onLocationSelected() {
