@@ -1,0 +1,122 @@
+[
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "com.udacity.project4.app-main-70:/mipmap-xhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/navigation_nav_graph.xml.flat",
+        "source": "com.udacity.project4.app-main-70:/navigation/nav_graph.xml"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "com.udacity.project4.app-main-70:/drawable-v24/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/drawable_ic_no_data.xml.flat",
+        "source": "com.udacity.project4.app-main-70:/drawable/ic_no_data.xml"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/drawable_ic_location.xml.flat",
+        "source": "com.udacity.project4.app-main-70:/drawable/ic_location.xml"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "com.udacity.project4.app-main-70:/mipmap-xxxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.udacity.project4.app-main-70:/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/layout_fragment_save_reminder.xml.flat",
+        "source": "com.udacity.project4.app-main-70:/layout/fragment_save_reminder.xml"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/menu_map_options.xml.flat",
+        "source": "com.udacity.project4.app-main-70:/menu/map_options.xml"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "com.udacity.project4.app-main-70:/mipmap-mdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/layout_fragment_select_location.xml.flat",
+        "source": "com.udacity.project4.app-main-70:/layout/fragment_select_location.xml"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/layout_activity_reminders.xml.flat",
+        "source": "com.udacity.project4.app-main-70:/layout/activity_reminders.xml"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.udacity.project4.app-main-70:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.udacity.project4.app-main-70:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "com.udacity.project4.app-main-70:/mipmap-xxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.udacity.project4.app-main-70:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/drawable_ic_save.xml.flat",
+        "source": "com.udacity.project4.app-main-70:/drawable/ic_save.xml"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/layout_activity_reminder_description.xml.flat",
+        "source": "com.udacity.project4.app-main-70:/layout/activity_reminder_description.xml"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/drawable_map.jpg.flat",
+        "source": "com.udacity.project4.app-main-70:/drawable/map.jpg"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/menu_main_menu.xml.flat",
+        "source": "com.udacity.project4.app-main-70:/menu/main_menu.xml"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.udacity.project4.app-main-70:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/raw_map_style.json.flat",
+        "source": "com.udacity.project4.app-main-70:/raw/map_style.json"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/layout_fragment_reminders.xml.flat",
+        "source": "com.udacity.project4.app-main-70:/layout/fragment_reminders.xml"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/drawable_ic_add.xml.flat",
+        "source": "com.udacity.project4.app-main-70:/drawable/ic_add.xml"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/layout_activity_authentication.xml.flat",
+        "source": "com.udacity.project4.app-main-70:/layout/activity_authentication.xml"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/layout_it_reminder.xml.flat",
+        "source": "com.udacity.project4.app-main-70:/layout/it_reminder.xml"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.udacity.project4.app-main-70:/mipmap-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.udacity.project4.app-main-70:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "com.udacity.project4.app-main-70:/mipmap-hdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.udacity.project4.app-merged_res-68:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.udacity.project4.app-main-70:/mipmap-hdpi/ic_launcher.png"
+    }
+]

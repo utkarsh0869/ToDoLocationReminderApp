@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">557945877388-hd29e4jc3bivno8e5heduai7hk4t78ns.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">557945877388</string>
+    <string name="google_api_key" translatable="false">AIzaSyD7ihyPJf1LSw1JaEK_D5SJq2Cx1IlXzV0</string>
+    <string name="google_app_id" translatable="false">1:557945877388:android:678c5cc1766cec4dcddca9</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyD7ihyPJf1LSw1JaEK_D5SJq2Cx1IlXzV0</string>
+    <string name="google_storage_bucket" translatable="false">todo-location-reminder-app.appspot.com</string>
+    <string name="project_id" translatable="false">todo-location-reminder-app</string>
+</resources>
