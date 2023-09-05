@@ -2,54 +2,44 @@ package com.udacity.project4.locationreminders.data
 
 import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 import com.udacity.project4.locationreminders.data.dto.Result
+import com.udacity.project4.locationreminders.data.local.RemindersDao
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
 //Use FakeDataSource that acts as a test double to the LocalDataSource
-class FakeDataSource(var remindersList: MutableList<ReminderDTO>? = mutableListOf()) : ReminderDataSource {
+class FakeDataSource : ReminderDataSource {
 
-
-    private var shouldReturnError = false
-
-
-    fun setReturnError(value: Boolean) {
-        shouldReturnError = value
+    private var reminderDTOMutableList = mutableListOf<ReminderDTO>()
+    private var returnError: Boolean = false
+    fun setReturnError(item: Boolean) {
+        returnError = item
     }
 
     override suspend fun getReminders(): Result<List<ReminderDTO>> {
-        if (shouldReturnError) {
-            return Result.Error(
-                "Error getting reminders"
-            )
+        return if (returnError) {
+            Result.Error("error")
+        } else {
+            Result.Success<List<ReminderDTO>>(reminderDTOMutableList)
         }
-        remindersList?.let { return Result.Success(it) }
-        return Result.Error("Reminders not found")
     }
 
     override suspend fun saveReminder(reminder: ReminderDTO) {
-        remindersList?.add(reminder)
+        reminderDTOMutableList.add(reminder)
     }
 
     override suspend fun getReminder(id: String): Result<ReminderDTO> {
-        val reminder = remindersList?.find { reminderDTO ->
-            reminderDTO.id == id
-        }
-
         return when {
-            shouldReturnError -> {
-                Result.Error("Reminder not found!")
-            }
-
-            reminder != null -> {
-                Result.Success(reminder)
-            }
+            returnError -> { Result.Error("error") }
             else -> {
-                Result.Error("Reminder not found!")
+                when (val reminder = reminderDTOMutableList.find { it.id == id }) {
+                    null -> { Result.Error("Not Found") }
+                    else -> { Result.Success(reminder) }
+                }
             }
-        }
-    }
+        }    }
 
     override suspend fun deleteAllReminders() {
-        remindersList?.clear()
+        reminderDTOMutableList.removeAll(reminderDTOMutableList)
     }
-
 
 }

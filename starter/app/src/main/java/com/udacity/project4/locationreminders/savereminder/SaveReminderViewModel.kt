@@ -36,10 +36,12 @@ class SaveReminderViewModel(val app: Application, val dataSource: ReminderDataSo
     /**
      * Validate the entered data then saves the reminder data to the DataSource
      */
-    fun validateAndSaveReminder(reminderData: ReminderDataItem) {
-        if (validateEnteredData(reminderData)) {
+    fun validateAndSaveReminder(reminderData: ReminderDataItem):Boolean {
+        return if (validateEnteredData(reminderData)) {
             saveReminder(reminderData)
+            true
         }
+        else  false
     }
 
     /**
@@ -60,6 +62,7 @@ class SaveReminderViewModel(val app: Application, val dataSource: ReminderDataSo
             )
             showLoading.value = false
             showToast.value = app.getString(R.string.reminder_saved)
+            showSnackBar.value = "Geofence added"
             navigationCommand.value = NavigationCommand.Back
         }
     }
@@ -69,11 +72,13 @@ class SaveReminderViewModel(val app: Application, val dataSource: ReminderDataSo
      */
     fun validateEnteredData(reminderData: ReminderDataItem): Boolean {
         if (reminderData.title.isNullOrEmpty()) {
+            showToast.value = app.getString(R.string.err_enter_title)
             showSnackBarInt.value = R.string.err_enter_title
             return false
         }
 
         if (reminderData.location.isNullOrEmpty()) {
+            showToast.value = app.getString(R.string.err_select_location)
             showSnackBarInt.value = R.string.err_select_location
             return false
         }

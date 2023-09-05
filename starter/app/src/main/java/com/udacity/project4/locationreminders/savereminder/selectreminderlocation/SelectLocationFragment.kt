@@ -10,15 +10,24 @@ import android.Manifest.permission
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.res.Resources
+import android.location.Location
 import android.net.Uri
 import android.provider.Settings
 import android.util.Log
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
 import com.udacity.project4.R
 import com.udacity.project4.base.BaseFragment
 import com.udacity.project4.base.NavigationCommand
@@ -26,6 +35,7 @@ import com.udacity.project4.databinding.FragmentSelectLocationBinding
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
+import java.util.Locale
 
 class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
@@ -35,7 +45,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private val TAG = SelectLocationFragment::class.java.simpleName
     private var marker: Marker? = null
-
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     private val runningQOrLater = android.os.Build.VERSION.SDK_INT >=
             android.os.Build.VERSION_CODES.Q
@@ -50,6 +60,8 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
         setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(true)
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.requireContext())
 
         val mapView = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapView.getMapAsync(this)
@@ -80,8 +92,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
                 permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) { // if the permission has not been granted
-            ActivityCompat.requestPermissions( // request for permission
-                requireActivity(),
+            requestPermissions( // request for permission
                 arrayOf(permission.ACCESS_FINE_LOCATION),
                 LOCATION_PERMISSION_REQUEST_CODE
             )
@@ -122,7 +133,6 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
                 openAppSettings()
             }
             .show()
-
     }
 
     private fun openAppSettings() {
@@ -139,6 +149,58 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             map.isMyLocationEnabled = true
+            zoomToCurrentLocation(true)
+        }
+    }
+
+    private fun zoomToCurrentLocation(b: Boolean) {
+        val requestLocation =
+            LocationRequest.create().apply { priority = LocationRequest.PRIORITY_LOW_POWER }
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(requestLocation)
+        val settingsClient = LocationServices.getSettingsClient(requireActivity())
+        val locationSettingsResponseTask = settingsClient.checkLocationSettings(builder.build())
+        locationSettingsResponseTask.addOnFailureListener {
+            if (it !is ResolvableApiException || !b) {
+                Snackbar.make(
+                    binding.root,
+                    "Must Enable Location services",
+                    Snackbar.LENGTH_INDEFINITE
+                ).setAction("Ok") { zoomToCurrentLocation(true) }.show()
+            } else {
+                startIntentSenderForResult(
+                    it.resolution.intentSender,
+                    1002, null,
+                    0, 0, 0, null
+                )
+            }
+        }
+        locationSettingsResponseTask.addOnCompleteListener {
+            if (it.isSuccessful) {
+                if (ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        permission.ACCESS_COARSE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return@addOnCompleteListener
+                }
+                fusedLocationProviderClient?.lastLocation?.addOnSuccessListener { loc: Location? ->
+                    if (loc != null) {
+                        val zoom = 15f
+                        val home = LatLng(loc.latitude, loc.longitude)
+                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(home, zoom))
+                    }
+                }
+            }
         }
     }
 
@@ -181,11 +243,13 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
         requestLocationPermission()
         setPoiClick(map)
+        setMapLongClick(map)
         setMapStyle(map)
     }
 
     private fun setPoiClick(map: GoogleMap) {
         map.setOnPoiClickListener { poi ->
+            map.clear()
             marker = map.addMarker(
                 MarkerOptions()
                     .position(poi.latLng)
@@ -211,6 +275,29 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
             }
         } catch (e: Resources.NotFoundException) {
             Log.e(TAG, "Can't find style. Error: ", e)
+        }
+    }
+
+    private fun setMapLongClick(map: GoogleMap) {
+        map.setOnMapLongClickListener { latLng ->
+            // A Snippet is Additional text that's displayed below the title.
+
+            val snippet = String.format(
+                Locale.getDefault(),
+                "Lat: %1$.5f, Long: %2$.5f",
+                latLng.latitude,
+                latLng.longitude
+            )
+            map.clear()
+            marker = map.addMarker(
+                MarkerOptions()
+                    .position(latLng)
+                    .title(getString(R.string.dropped_pin))
+                    .snippet(snippet)
+            )
+
+            marker?.showInfoWindow()
+            map.animateCamera(CameraUpdateFactory.newLatLng(latLng))
         }
     }
 }

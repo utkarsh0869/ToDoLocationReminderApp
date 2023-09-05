@@ -1,17 +1,19 @@
 package com.udacity.project4.authentication
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
-import com.udacity.project4.R
 import com.udacity.project4.databinding.ActivityAuthenticationBinding
 import com.udacity.project4.locationreminders.RemindersActivity
 
@@ -30,6 +32,8 @@ class AuthenticationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAuthenticationBinding
 
+    private val REQUEST_CODE_NOTIFICATION_PERMISSION = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,16 +42,29 @@ class AuthenticationActivity : AppCompatActivity() {
         setContentView(view)
         observeAuthenticationState()
 
-//        binding.loginButton.setOnClickListener {
-//            launchSignInFlow()
-//        }
-        // TODO: Implement the create account and sign in using FirebaseUI,
-        //  use sign in using email and sign in using Google
+        // Check if the user has granted the notification permission.
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+            != PackageManager.PERMISSION_GRANTED) {
+            // The user has not granted the notification permission.
+            // Request the permission from the user.
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                REQUEST_CODE_NOTIFICATION_PERMISSION);
+        }
+    }
 
-        // TODO: If the user was authenticated, send him to RemindersActivity
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions!!, grantResults)
+        if (requestCode == REQUEST_CODE_NOTIFICATION_PERMISSION) {
+            if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            } else {
 
-        // TODO: a bonus is to customize the sign in flow to look nice using :
-        //https://github.com/firebase/FirebaseUI-Android/blob/master/auth/README.md#custom-layout
+            }
+        }
     }
 
     /**
