@@ -161,16 +161,39 @@ class RemindersActivityTest :
 
     @ExperimentalCoroutinesApi
     @Test
-    fun showReminderToast() = runBlocking{
-        val remindersActivityActivityScenario = ActivityScenario.launch(RemindersActivity::class.java)
-        dataBindingIdlingResource.monitorActivity(remindersActivityActivityScenario)
+    fun clickingSaveReminder_showTitleErrorToastMessage() = runBlocking {
+        val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
+        dataBindingIdlingResource.monitorActivity(activityScenario)
 
         onView(withId(R.id.addReminderFAB)).perform(click())
         onView(withId(R.id.saveReminder)).perform(click())
 
-        onView(withText(R.string.err_enter_title)).inRoot(withDecorView(not(`is`(getActivity(remindersActivityActivityScenario)?.window?.decorView)))).check(matches(isDisplayed()))
+        onView(withText(R.string.err_enter_title)).inRoot(withDecorView(not(`is`(getActivity(activityScenario)?.window?.decorView)))).check(matches(isDisplayed()))
 
-        remindersActivityActivityScenario.close()
+        activityScenario.close()
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun clickingSaveReminder_showReminderSavedToastMessage() = runBlocking {
+        val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
+        dataBindingIdlingResource.monitorActivity(activityScenario)
+
+        onView(withId(R.id.addReminderFAB)).perform(click())
+        onView(withId(R.id.reminderTitle)).perform(typeText("Title123"))
+        closeSoftKeyboard()
+        onView(withId(R.id.reminderDescription)).perform(typeText("Description123"))
+        closeSoftKeyboard()
+
+        onView(withId(R.id.selectLocation)).perform(click())
+        onView(withId(R.id.map)).perform(longClick())
+        onView(withId(R.id.saveButton)).perform(click())
+
+        onView(withId(R.id.saveReminder)).perform(click())
+
+        onView(withText(R.string.reminder_saved)).inRoot(withDecorView(not(`is`(getActivity(activityScenario)?.window?.decorView)))).check(matches(isDisplayed()))
+
+        activityScenario.close()
     }
 
 }
