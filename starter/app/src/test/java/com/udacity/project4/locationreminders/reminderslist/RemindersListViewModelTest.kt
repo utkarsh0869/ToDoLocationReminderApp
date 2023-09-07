@@ -77,7 +77,7 @@ class RemindersListViewModelTest {
 
         // THEN
         mainCoroutineRule.resumeDispatcher()
-        assertEquals("Error getting reminders", remindersListViewModel.showSnackBar.getOrAwaitValue())
+        assertEquals("error", remindersListViewModel.showSnackBar.getOrAwaitValue())
     }
 
     @Test
