@@ -8,9 +8,11 @@ A Todo list app with location reminders that remind the user to do something whe
 * [FirebaseUI Authentication](https://github.com/firebase/FirebaseUI-Android/blob/master/auth/README.md) - FirebaseUI provides a drop-in auth solution that handles the UI flows for signing
 * [JobIntentService](https://developer.android.com/reference/androidx/core/app/JobIntentService) - Run background service from the background application, Compatible with >= Android O.
 
-## Video Demo and Screenshots
+## Video Demo 
 
 [![To Do Location Reminder Android Application](https://i.ytimg.com/vi/nNKnHIbt4Bk/maxresdefault.jpg)](https://youtu.be/nNKnHIbt4Bk?si=HC44Z25FdXLbD8Mh "To Do Location Reminder Android Application")
+
+## Screenshots
 
 <img src="https://github.com/utkarsh0869/ToDoLocationReminderApp/assets/44482062/706978d9-efa9-4bf2-ad3b-f2bad1bc345d" alt="Image 1" width="360">
 
